@@ -23,7 +23,7 @@ namespace ConsoleApp10
 
     class Program
     {
-        private static IEnumerable<FeedBackTrainingData> GetTrainingData()
+        private static List<FeedBackTrainingData> GetTrainingData()
         {
             var trainingData = new List<FeedBackTrainingData>
             {
@@ -55,7 +55,7 @@ namespace ConsoleApp10
             return trainingData;
         }
 
-        private static IEnumerable<FeedBackTrainingData> GetTestData()
+        private static List<FeedBackTrainingData> GetTestData()
         {
             var testData = new List<FeedBackTrainingData>
             {
@@ -66,7 +66,6 @@ namespace ConsoleApp10
                 new FeedBackTrainingData {FeedBackText = "sweet", IsGood = true},
                 new FeedBackTrainingData {FeedBackText = "average", IsGood = true},
                 new FeedBackTrainingData {FeedBackText = "get lost", IsGood = false},
-                new FeedBackTrainingData {FeedBackText = "syam", IsGood = true}
             };
 
             return testData;
@@ -87,6 +86,7 @@ namespace ConsoleApp10
                     .Append(mlContext.BinaryClassification.Trainers.FastTree(numLeaves: 50, numTrees: 50, minDatapointsInLeaves: 1));
 
             //Step5: Train the algorithm to create model.
+            Console.WriteLine("Successfully trained algorithm using total '" + trainingData.Count + "' training data and Model is ready for use.");
             var model = pipeline.Fit(dataView);
 
 
@@ -102,15 +102,15 @@ namespace ConsoleApp10
             // Step 7 :- use the model
             while (true)
             {
-                Console.WriteLine(Environment.NewLine + "Enter a feedback string:");
+                Console.WriteLine(Environment.NewLine + "Enter a feedback to test:");
                 var userInputString = Console.ReadLine();
 
                 var algorithmPredictionFunction = model.MakePredictionFunction<FeedBackTrainingData, FeedBackPrediction>(mlContext);
 
                 var feedbackInput = new FeedBackTrainingData { FeedBackText = userInputString };
                 var predictedResult = algorithmPredictionFunction.Predict(feedbackInput);
-                var userFeedback = predictedResult.IsGood ? "good feedback." : "bad feedback.";
-                Console.WriteLine("Algorithm predicted given input is a " + userFeedback);
+                var userFeedback = predictedResult.IsGood ? "'good' feedback." : "'bad' feedback.";
+                Console.WriteLine("Algorithm predicts given input as a " + userFeedback);
             }
         }
     }
