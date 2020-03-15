@@ -6,3 +6,5 @@
 /.vs/ConsoleApp10/v15
 /.vs
 /ConsoleApp10/bin/Debug/netcoreapp2.1
+/Ml.NetFeedbackAnalyzer/bin/Debug/netcoreapp2.1
+/Ml.NetFeedbackAnalyzer/obj
